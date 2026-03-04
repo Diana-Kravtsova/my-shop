@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Heart, HeartOff, Loader2 } from "lucide-react";
 
 interface ProductCardProps {
   product: Product;
@@ -80,15 +81,28 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
       </CardContent>
 
-      <CardFooter className="p-4 pt-0">
+      <CardFooter className="p-4 pt-0 mt-auto">
         <Button
           onClick={() => toggleFavorite(product.id)}
           variant={isMounted && isFav ? "destructive" : "secondary"}
           className="w-full gap-2"
           aria-label={isMounted && isFav ? "Remove from favorites" : "Add to favorites"}
         >
-          <span>{isMounted && isFav ? "❤️" : "🤍"}</span>
-          {isMounted && isFav ? "In Favorites" : "Add to Favorites"}
+          {isLoading ? (
+            <Loader2 className="h-5 w-5 animate-spin" />
+          ) : isMounted && isFav ? (
+            <HeartOff className="h-5 w-5" />
+          ) : (
+            <Heart className="h-5 w-5" />
+          )}
+          <span>
+            {isLoading
+              ? "Processing..."
+              : isMounted && isFav
+                ? "Remove from Favorites"
+                : "Add to Favorites"
+            }
+          </span>
         </Button>
       </CardFooter>
     </Card>
