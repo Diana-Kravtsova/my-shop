@@ -1,22 +1,18 @@
 import { type Product } from "./store";
 
-const API_BASE_URL = "https://fakestoreapi.com";
+const API_BASE_URL = "https://dummyjson.com";
 
 export async function getAllProducts(): Promise<Product[]> {
-  const res = await fetch(`${API_BASE_URL}/products`, {
-    next: { revalidate: 3600 },
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-      'Accept': 'application/json',
-    }
+  const res = await fetch(`${API_BASE_URL}/products?limit=50`, {
+    next: { revalidate: 3600 }
   });
 
   if (!res.ok) {
-    console.error(`Fetch failed: ${res.status} ${res.statusText}`);
     throw new Error(`Failed to fetch products: ${res.status}`);
   }
 
-  return res.json();
+  const data = await res.json();
+  return data.products;
 }
 
 export async function getProductById(id: string | number): Promise<Product> {
@@ -41,7 +37,8 @@ export async function getProductsByCategory(category: string): Promise<Product[]
     throw new Error(`Failed to fetch products by category: ${res.status}`);
   }
 
-  return res.json();
+  const data = await res.json();
+  return data.products;
 }
 
 export async function getAllCategories(): Promise<string[]> {
@@ -51,5 +48,6 @@ export async function getAllCategories(): Promise<string[]> {
     throw new Error(`Failed to fetch categories: ${res.status}`);
   }
 
-  return res.json();
+  const data = await res.json();
+  return data.map((c: any) => typeof c === 'string' ? c : (c.slug || c.name || String(c)));
 }

@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useAppStore, type Product } from "@/lib/store";
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { useAppStore, type Product } from '@/lib/store';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Heart, HeartOff, Loader2 } from "lucide-react";
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Heart, HeartOff, Loader2 } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
-  const { toggleFavorite, isFavorite } = useAppStore();
+export default function ProductCard({product}: ProductCardProps) {
+  const {toggleFavorite, isFavorite} = useAppStore();
   const [imageError, setImageError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
@@ -40,12 +40,11 @@ export default function ProductCard({ product }: ProductCardProps) {
         )}
         {!imageError ? (
           <Image
-            src={product.image}
+            src={product.thumbnail || product.images?.[0] || ''}
             alt={product.title}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className={`object-contain p-4 transition-opacity duration-300 ${
-              isLoading ? "opacity-0" : "opacity-100"
+            className={`object-contain p-4 transition-opacity duration-300 ${isLoading ? 'opacity-0' : 'opacity-100'
             }`}
             onLoad={() => setIsLoading(false)}
             onError={() => {
@@ -75,8 +74,8 @@ export default function ProductCard({ product }: ProductCardProps) {
           </span>
           <Badge variant="outline" className="gap-1">
             <span className="text-yellow-500">★</span>
-            <span>{product.rating.rate}</span>
-            <span className="text-xs text-muted-foreground">({product.rating.count})</span>
+            <span>{product.rating}</span>
+            <span className="text-xs text-muted-foreground">({product.reviews?.length || 0})</span>
           </Badge>
         </div>
       </CardContent>

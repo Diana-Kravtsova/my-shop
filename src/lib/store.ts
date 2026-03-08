@@ -7,11 +7,16 @@ export interface Product {
   price: number;
   description: string;
   category: string;
-  image: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
+  rating: number;
+  reviews?: {
+    rating: number;
+    comment: string;
+    date: string;
+    reviewerName: string;
+    reviewerEmail: string;
+  }[];
+  images?: string[];
+  thumbnail?: string;
 }
 
 interface User {

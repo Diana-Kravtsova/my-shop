@@ -25,7 +25,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
         <div className="grid md:grid-cols-2 gap-8">
           <div className="relative h-96 bg-white dark:bg-gray-800 rounded-lg p-8 border">
             <Image
-              src={product.image}
+              src={product.images?.[0] || product.thumbnail || ""}
               alt={product.title}
               fill
               sizes="(max-width: 768px) 100vw, 50vw"
@@ -43,9 +43,9 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
                 </span>
                 <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/20 px-3 py-1 rounded-full">
                   <span className="text-yellow-500">★</span>
-                  <span className="font-medium">{product.rating.rate}</span>
+                  <span className="font-medium">{product.rating}</span>
                   <span className="text-gray-500 dark:text-gray-400 text-sm">
-                    ({product.rating.count} reviews)
+                    ({product.reviews?.length || 0} reviews)
                   </span>
                 </div>
               </div>
