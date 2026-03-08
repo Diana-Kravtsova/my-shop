@@ -4,10 +4,15 @@ const API_BASE_URL = "https://fakestoreapi.com";
 
 export async function getAllProducts(): Promise<Product[]> {
   const res = await fetch(`${API_BASE_URL}/products`, {
-    next: { revalidate: 3600 }
+    next: { revalidate: 3600 },
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+      'Accept': 'application/json',
+    }
   });
 
   if (!res.ok) {
+    console.error(`Fetch failed: ${res.status} ${res.statusText}`);
     throw new Error(`Failed to fetch products: ${res.status}`);
   }
 
