@@ -1,30 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MyShop
+[DEMO](https://my-shop-puce.vercel.app/)
 
-## Getting Started
+## Brief Functionality
+MyShop is a modern, responsive web application built with Next.js and React. It features dynamic REST API data fetching, robust state management using Zustand, and efficient form handling seamlessly integrated with React Hook Form. The user interface is carefully crafted using Tailwind CSS and Shadcn UI, providing a sleek, modern, and accessible experience. The application includes multiple pages with seamless routing capabilities.
 
-First, run the development server:
+## List of Dependencies
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Core Dependencies
+- **Next.js** - The core React framework for the application.
+- **React / React DOM** - UI library.
+- **Zustand** - A small, fast, and scalable bearbones state management solution.
+- **React Hook Form** - Performant, flexible, and extensible forms with easy-to-use validation.
+- **Tailwind CSS** - A utility-first CSS framework for rapid UI development.
+- **Radix UI Primitives** - Unstyled, accessible UI components.
+- **Lucide React** - Beautiful and consistent icon toolkit.
+- **clsx** & **tailwind-merge** - Utilities for constructing and merging Tailwind classes conditionally.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Development Dependencies
+- **TypeScript**
+- **ESLint**
+- **Shadcn UI CLI**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Instructions on How to Run
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Install dependencies:**
+   Ensure you have Node.js installed, then run the following command in the project root directory:
+   ```bash
+   npm install
+   ```
 
-## Learn More
+2. **Run the development server:**
+   Start the development server by running:
+   ```bash
+   npm run dev
+   ```
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+3. **View the application:**
+   Open your browser and navigate to [http://localhost:3000](http://localhost:3000) to see the application running.
