@@ -14,18 +14,27 @@ export interface Product {
   };
 }
 
+interface User {
+  email: string;
+  name: string;
+}
+
 interface AppState {
   favorites: number[];
+  user: User | null;
   addToFavorites: (productId: number) => void;
   removeFromFavorites: (productId: number) => void;
   toggleFavorite: (productId: number) => void;
   isFavorite: (productId: number) => boolean;
+  login: (user: User) => void;
+  logout: () => void;
 }
 
 export const useAppStore = create<AppState>()(
   persist(
     (set, get) => ({
       favorites: [],
+      user: null,
 
       addToFavorites: (productId) => {
         set((state) => ({
@@ -50,7 +59,10 @@ export const useAppStore = create<AppState>()(
 
       isFavorite: (productId) => {
         return get().favorites.includes(productId);
-      }
+      },
+
+      login: (user) => set({ user }),
+      logout: () => set({ user: null }),
     }),
     {
       name: 'app-storage',
