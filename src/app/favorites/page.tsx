@@ -1,66 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense } from "react";
 import Link from "next/link";
-import { useAppStore, type Product } from "@/lib/store";
 import ProductCard from "@/components/ProductCard";
-import { getAllProducts } from "@/lib/api";
+import { useFavoriteProducts } from "@/hooks/useFavoriteProducts";
 
-export default function FavoritesPage() {
-  const { favorites } = useAppStore();
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [isMounted, setIsMounted] = useState(false);
+function FavoritesSkeleton() {
+  return (
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {[...Array(4)].map((_, i) => (
+        <div key={i} className="animate-pulse rounded-lg border p-4">
+          <div className="mb-4 h-48 rounded bg-gray-200 dark:bg-gray-700" />
+          <div className="mb-2 h-6 rounded bg-gray-200 dark:bg-gray-700" />
+          <div className="h-4 w-1/2 rounded bg-gray-200 dark:bg-gray-700" />
+        </div>
+      ))}
+    </div>
+  );
+}
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  useEffect(() => {
-    async function fetchFavoriteProducts() {
-      if (!isMounted) return;
-
-      if (favorites.length === 0) {
-        setProducts([]);
-        setLoading(false);
-        return;
-      }
-
-      try {
-        const allProducts = await getAllProducts();
-        const favoriteProducts = allProducts.filter((product) => favorites.includes(product.id));
-        setProducts(favoriteProducts);
-      } catch (error) {
-        console.error("Failed to fetch favorites:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchFavoriteProducts();
-  }, [favorites, isMounted]);
-
-  if (!isMounted) {
-    return (
-      <div className="py-16 text-center">
-        <div className="mx-auto h-12 w-12 animate-spin rounded-full border-4 border-blue-500 border-t-transparent" />
-      </div>
-    );
-  }
-
-  if (loading) {
-    return (
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {[...Array(4)].map((_, i) => (
-          <div key={i} className="animate-pulse rounded-lg border p-4">
-            <div className="mb-4 h-48 rounded bg-gray-200 dark:bg-gray-700" />
-            <div className="mb-2 h-6 rounded bg-gray-200 dark:bg-gray-700" />
-            <div className="h-4 w-1/2 rounded bg-gray-200 dark:bg-gray-700" />
-          </div>
-        ))}
-      </div>
-    );
-  }
+function FavoritesList() {
+  const products = useFavoriteProducts();
 
   if (products.length === 0) {
     return (
@@ -91,5 +51,13 @@ export default function FavoritesPage() {
         ))}
       </div>
     </div>
+  );
+}
+
+export default function FavoritesPage() {
+  return (
+    <Suspense fallback={<FavoritesSkeleton />}>
+      <FavoritesList />
+    </Suspense>
   );
 }
