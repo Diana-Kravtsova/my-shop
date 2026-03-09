@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppStore } from "@/lib/store";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Heart, HeartOff, Loader2 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -12,14 +12,9 @@ interface ClientProductActionsProps {
 
 export default function ClientProductActions({ productId }: ClientProductActionsProps) {
   const { toggleFavorite, isFavorite } = useAppStore();
-  const [isMounted, setIsMounted] = useState(false);
   const [isPending, setIsPending] = useState(false);
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  const isFav = isMounted ? isFavorite(productId) : false;
+  const isFav = isFavorite(productId);
 
   const handleToggleFavorite = async () => {
     setIsPending(true);
@@ -28,13 +23,19 @@ export default function ClientProductActions({ productId }: ClientProductActions
     setIsPending(false);
   };
 
-  if (!isMounted) {
-    return (
-      <Button disabled className="w-full gap-2 md:w-auto">
-        <Loader2 className="h-4 w-4 animate-spin" />
-        Loading...
-      </Button>
-    );
+  let buttonIcon = <Heart className="h-5 w-5" />;
+  let buttonText = "Add to Favorites";
+  let buttonVariant: "default" | "destructive" = "default";
+  let tooltipText = "Click to add to your favorites";
+
+  if (isPending) {
+    buttonIcon = <Loader2 className="h-5 w-5 animate-spin" />;
+    buttonText = "Processing...";
+  } else if (isFav) {
+    buttonIcon = <HeartOff className="h-5 w-5" />;
+    buttonText = "Remove from Favorites";
+    buttonVariant = "destructive";
+    tooltipText = "Click to remove from your favorites";
   }
 
   return (
@@ -44,27 +45,17 @@ export default function ClientProductActions({ productId }: ClientProductActions
           <TooltipTrigger asChild>
             <Button
               onClick={handleToggleFavorite}
-              variant={isFav ? "destructive" : "default"}
+              variant={buttonVariant}
               size="lg"
               className="w-full gap-2 transition-all duration-200 hover:scale-105 sm:w-auto"
               disabled={isPending}
             >
-              {isPending ? (
-                <Loader2 className="h-5 w-5 animate-spin" />
-              ) : isFav ? (
-                <HeartOff className="h-5 w-5" />
-              ) : (
-                <Heart className="h-5 w-5" />
-              )}
-              <span>
-                {isPending ? "Processing..." : isFav ? "Remove from Favorites" : "Add to Favorites"}
-              </span>
+              {buttonIcon}
+              <span>{buttonText}</span>
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>
-              {isFav ? "Click to remove from your favorites" : "Click to add to your favorites"}
-            </p>
+            <p>{tooltipText}</p>
           </TooltipContent>
         </Tooltip>
       </div>

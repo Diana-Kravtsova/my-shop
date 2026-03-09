@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAppStore, type Product } from "@/lib/store";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Heart, HeartOff, Loader2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ProductCardProps {
   product: Product;
@@ -17,13 +18,23 @@ export default function ProductCard({ product }: ProductCardProps) {
   const { toggleFavorite, isFavorite } = useAppStore();
   const [imageError, setImageError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   const isFav = isFavorite(product.id);
+
+  let buttonIcon = <Heart className="h-5 w-5" />;
+  let buttonText = "Add to Favorites";
+  let buttonVariant: "secondary" | "destructive" = "secondary";
+  let buttonAriaLabel = "Add to favorites";
+
+  if (isLoading) {
+    buttonIcon = <Loader2 className="h-5 w-5 animate-spin" />;
+    buttonText = "Processing...";
+  } else if (isFav) {
+    buttonIcon = <HeartOff className="h-5 w-5" />;
+    buttonText = "Remove from Favorites";
+    buttonVariant = "destructive";
+    buttonAriaLabel = "Remove from favorites";
+  }
 
   return (
     <Card className="group overflow-hidden transition-all hover:shadow-lg">
@@ -39,9 +50,10 @@ export default function ProductCard({ product }: ProductCardProps) {
             alt={product.title}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className={`object-contain p-4 transition-opacity duration-300 ${
+            className={cn(
+              "object-contain p-4 transition-opacity duration-300",
               isLoading ? "opacity-0" : "opacity-100"
-            }`}
+            )}
             onLoad={() => setIsLoading(false)}
             onError={() => {
               setImageError(true);
@@ -79,25 +91,12 @@ export default function ProductCard({ product }: ProductCardProps) {
       <CardFooter className="mt-auto p-4 pt-0">
         <Button
           onClick={() => toggleFavorite(product.id)}
-          variant={isMounted && isFav ? "destructive" : "secondary"}
+          variant={buttonVariant}
           className="w-full gap-2"
-          aria-label={isMounted && isFav ? "Remove from favorites" : "Add to favorites"}
+          aria-label={buttonAriaLabel}
         >
-          {isLoading ? (
-            <Loader2 className="h-5 w-5 animate-spin" />
-          ) : isMounted && isFav ? (
-            <HeartOff className="h-5 w-5" />
-          ) : (
-            <Heart className="h-5 w-5" />
-          )}
-          <span>
-            {isLoading
-              ? "Processing..."
-              : isMounted && isFav
-                ? "Remove from Favorites"
-                : "Add to Favorites"
-            }
-          </span>
+          {buttonIcon}
+          <span>{buttonText}</span>
         </Button>
       </CardFooter>
     </Card>
