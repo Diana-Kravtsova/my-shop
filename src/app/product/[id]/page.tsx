@@ -4,11 +4,7 @@ import { getProductById } from "@/lib/api";
 import ClientProductActions from "./ClientProductActions";
 import type { Metadata } from "next";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const product = await getProductById(id);
 
@@ -57,9 +53,7 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
 
             <div>
               <h2 className="mb-2 text-lg font-semibold">Description</h2>
-              <p className="leading-relaxed text-gray-600 dark:text-gray-300">
-                {product.description}
-              </p>
+              <p className="leading-relaxed text-gray-600 dark:text-gray-300">{product.description}</p>
             </div>
 
             <div>

@@ -1,13 +1,21 @@
-import { use } from "react";
+import { useEffect, useState } from "react";
 import { useAppStore } from "@/lib/store";
-import { getAllProducts } from "@/lib/api";
+import { getProductById } from "@/lib/api";
 import type { Product } from "@/lib/store";
 
-const allProductsPromise = getAllProducts();
+export function useFavoriteProducts() {
+    const favorites = useAppStore(state => state.favorites);
+    const [products, setProducts] = useState<Product[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
-export function useFavoriteProducts(): Product[] {
-  const favorites = useAppStore(state => state.favorites);
-  const allProducts = use(allProductsPromise);
+    useEffect(() => {
+        if (!favorites.length) return setProducts([]);
 
-  return allProducts.filter(p => favorites.includes(p.id));
+        setIsLoading(true);
+        Promise.all(favorites.map(id => getProductById(id)))
+            .then(setProducts)
+            .finally(() => setIsLoading(false));
+    }, [favorites]);
+
+    return { products, isLoading };
 }

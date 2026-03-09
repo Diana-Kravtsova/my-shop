@@ -33,6 +33,7 @@ interface AppState {
   removeFromFavorites: (productId: number) => void;
   toggleFavorite: (productId: number) => void;
   isFavorite: (productId: number) => boolean;
+  clearFavorites: () => void;
   login: (user: User) => void;
   logout: () => void;
 }
@@ -68,6 +69,7 @@ export const useAppStore = create<AppState>()(
         return get().favorites.includes(productId);
       },
 
+      clearFavorites: () => set({ favorites: [] }),
       login: user => set({ user }),
       logout: () => set({ user: null }),
     }),
