@@ -52,7 +52,7 @@ export default function LoginPage() {
                 placeholder="john@example.com"
                 {...register("email", { required: "Email is required" })}
               />
-              {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
+              {errors.email && <p className="text-destructive text-sm">{errors.email.message}</p>}
             </div>
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
@@ -62,11 +62,13 @@ export default function LoginPage() {
                 placeholder="••••••••"
                 {...register("password", { required: "Password is required" })}
               />
-              {errors.password && <p className="text-sm text-destructive">{errors.password.message}</p>}
+              {errors.password && (
+                <p className="text-destructive text-sm">{errors.password.message}</p>
+              )}
             </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit" className="w-full mt-4">Sign In</Button>
+            <Button type="submit" className="mt-4 w-full">Sign In</Button>
           </CardFooter>
         </form>
       </Card>

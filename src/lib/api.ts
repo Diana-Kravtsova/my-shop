@@ -4,7 +4,7 @@ const API_BASE_URL = "https://dummyjson.com";
 
 export async function getAllProducts(): Promise<Product[]> {
   const res = await fetch(`${API_BASE_URL}/products?limit=50`, {
-    next: { revalidate: 3600 }
+    next: { revalidate: 3600 },
   });
 
   if (!res.ok) {
@@ -17,7 +17,7 @@ export async function getAllProducts(): Promise<Product[]> {
 
 export async function getProductById(id: string | number): Promise<Product> {
   const res = await fetch(`${API_BASE_URL}/products/${id}`, {
-    cache: "no-store"
+    cache: "no-store",
   });
 
   if (!res.ok) {
@@ -49,5 +49,5 @@ export async function getAllCategories(): Promise<string[]> {
   }
 
   const data = await res.json();
-  return data.map((c: any) => typeof c === 'string' ? c : (c.slug || c.name || String(c)));
+  return data.map((c: any) => (typeof c === "string" ? c : c.slug || c.name || String(c)));
 }

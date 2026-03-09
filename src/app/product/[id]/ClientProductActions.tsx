@@ -4,12 +4,7 @@ import { useAppStore } from "@/lib/store";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Heart, HeartOff, Loader2 } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface ClientProductActionsProps {
   productId: number;
@@ -28,14 +23,14 @@ export default function ClientProductActions({ productId }: ClientProductActions
 
   const handleToggleFavorite = async () => {
     setIsPending(true);
-    await new Promise(resolve => setTimeout(resolve, 300));
+    await new Promise((resolve) => setTimeout(resolve, 300));
     toggleFavorite(productId);
     setIsPending(false);
   };
 
   if (!isMounted) {
     return (
-      <Button disabled className="w-full md:w-auto gap-2">
+      <Button disabled className="w-full gap-2 md:w-auto">
         <Loader2 className="h-4 w-4 animate-spin" />
         Loading...
       </Button>
@@ -44,14 +39,14 @@ export default function ClientProductActions({ productId }: ClientProductActions
 
   return (
     <TooltipProvider>
-      <div className="flex flex-col sm:flex-row gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row">
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
               onClick={handleToggleFavorite}
               variant={isFav ? "destructive" : "default"}
               size="lg"
-              className="w-full sm:w-auto gap-2 transition-all duration-200 hover:scale-105"
+              className="w-full gap-2 transition-all duration-200 hover:scale-105 sm:w-auto"
               disabled={isPending}
             >
               {isPending ? (
@@ -62,17 +57,14 @@ export default function ClientProductActions({ productId }: ClientProductActions
                 <Heart className="h-5 w-5" />
               )}
               <span>
-                {isPending
-                  ? "Processing..."
-                  : isFav
-                    ? "Remove from Favorites"
-                    : "Add to Favorites"
-                }
+                {isPending ? "Processing..." : isFav ? "Remove from Favorites" : "Add to Favorites"}
               </span>
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>{isFav ? "Click to remove from your favorites" : "Click to add to your favorites"}</p>
+            <p>
+              {isFav ? "Click to remove from your favorites" : "Click to add to your favorites"}
+            </p>
           </TooltipContent>
         </Tooltip>
       </div>

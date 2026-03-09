@@ -1,5 +1,5 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export interface Product {
   id: number;
@@ -43,13 +43,13 @@ export const useAppStore = create<AppState>()(
 
       addToFavorites: (productId) => {
         set((state) => ({
-          favorites: [...state.favorites, productId]
+          favorites: [...state.favorites, productId],
         }));
       },
 
       removeFromFavorites: (productId) => {
         set((state) => ({
-          favorites: state.favorites.filter(id => id !== productId)
+          favorites: state.favorites.filter((id) => id !== productId),
         }));
       },
 
@@ -70,7 +70,7 @@ export const useAppStore = create<AppState>()(
       logout: () => set({ user: null }),
     }),
     {
-      name: 'app-storage',
-    }
-  )
+      name: "app-storage",
+    },
+  ),
 );

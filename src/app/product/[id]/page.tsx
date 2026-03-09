@@ -4,7 +4,11 @@ import { getProductById } from "@/lib/api";
 import ClientProductActions from "./ClientProductActions";
 import type { Metadata } from "next";
 
-export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
   const { id } = await params;
   const product = await getProductById(id);
 
@@ -21,9 +25,9 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
     const product = await getProductById(id);
 
     return (
-      <div className="max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-8">
-          <div className="relative h-96 bg-white dark:bg-gray-800 rounded-lg p-8 border">
+      <div className="mx-auto max-w-6xl">
+        <div className="grid gap-8 md:grid-cols-2">
+          <div className="relative h-96 rounded-lg border bg-white p-8 dark:bg-gray-800">
             <Image
               src={product.images?.[0] || product.thumbnail || ""}
               alt={product.title}
@@ -36,15 +40,15 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
 
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl font-bold mb-4">{product.title}</h1>
-              <div className="flex items-center gap-4 mb-4">
+              <h1 className="mb-4 text-3xl font-bold">{product.title}</h1>
+              <div className="mb-4 flex items-center gap-4">
                 <span className="text-3xl font-bold text-green-600 dark:text-green-400">
                   ${product.price.toFixed(2)}
                 </span>
-                <div className="flex items-center gap-1 bg-yellow-50 dark:bg-yellow-900/20 px-3 py-1 rounded-full">
+                <div className="flex items-center gap-1 rounded-full bg-yellow-50 px-3 py-1 dark:bg-yellow-900/20">
                   <span className="text-yellow-500">★</span>
                   <span className="font-medium">{product.rating}</span>
-                  <span className="text-gray-500 dark:text-gray-400 text-sm">
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
                     ({product.reviews?.length || 0} reviews)
                   </span>
                 </div>
@@ -52,14 +56,14 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             </div>
 
             <div>
-              <h2 className="text-lg font-semibold mb-2">Description</h2>
-              <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+              <h2 className="mb-2 text-lg font-semibold">Description</h2>
+              <p className="leading-relaxed text-gray-600 dark:text-gray-300">
                 {product.description}
               </p>
             </div>
 
             <div>
-              <span className="inline-block bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-full text-sm capitalize">
+              <span className="inline-block rounded-full bg-gray-200 px-3 py-1 text-sm capitalize dark:bg-gray-700">
                 {product.category}
               </span>
             </div>

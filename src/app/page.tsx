@@ -10,7 +10,7 @@ async function ProductGrid() {
   const products = await getAllProducts();
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
@@ -21,20 +21,22 @@ async function ProductGrid() {
 export default function HomePage() {
   return (
     <div className="space-y-8">
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+      <div className="space-y-4 text-center">
+        <h1 className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-4xl font-bold text-transparent">
           Our Products
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+        <p className="mx-auto max-w-2xl text-gray-600 dark:text-gray-400">
           Browse through our collection of amazing products at great prices
         </p>
       </div>
 
-      <Suspense fallback={
-        <div className="flex justify-center py-12">
-          <LoadingSpinner size="lg" />
-        </div>
-      }>
+      <Suspense
+        fallback={
+          <div className="flex justify-center py-12">
+            <LoadingSpinner size="lg" />
+          </div>
+        }
+      >
         <ProductGrid />
       </Suspense>
     </div>

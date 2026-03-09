@@ -1,12 +1,15 @@
 # MyShop
+
 [DEMO](https://my-shop-puce.vercel.app/)
 
 ## Brief Functionality
+
 MyShop is a modern, responsive web application built with Next.js and React. It features dynamic REST API data fetching, robust state management using Zustand, and efficient form handling seamlessly integrated with React Hook Form. The user interface is carefully crafted using Tailwind CSS and Shadcn UI, providing a sleek, modern, and accessible experience. The application includes multiple pages with seamless routing capabilities.
 
 ## List of Dependencies
 
 ### Core Dependencies
+
 - **Next.js** - The core React framework for the application.
 - **React / React DOM** - UI library.
 - **Zustand** - A small, fast, and scalable bearbones state management solution.
@@ -17,6 +20,7 @@ MyShop is a modern, responsive web application built with Next.js and React. It 
 - **clsx** & **tailwind-merge** - Utilities for constructing and merging Tailwind classes conditionally.
 
 ### Development Dependencies
+
 - **TypeScript**
 - **ESLint**
 - **Shadcn UI CLI**
@@ -25,12 +29,14 @@ MyShop is a modern, responsive web application built with Next.js and React. It 
 
 1. **Install dependencies:**
    Ensure you have Node.js installed, then run the following command in the project root directory:
+
    ```bash
    npm install
    ```
 
 2. **Run the development server:**
    Start the development server by running:
+
    ```bash
    npm run dev
    ```
