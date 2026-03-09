@@ -1,21 +1,15 @@
 import { Suspense } from "react";
-import ProductCard from "@/components/ProductCard";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { getAllProducts } from "@/lib/api";
+import ProductList from "@/components/ProductList";
 
 export const dynamic = "force-static";
 export const revalidate = 3600; // every hour
 
 async function ProductGrid() {
-  const products = await getAllProducts();
+  const data = await getAllProducts();
 
-  return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
-    </div>
-  );
+  return <ProductList initialProducts={data.products} initialTotal={data.total} />;
 }
 
 export default function HomePage() {
