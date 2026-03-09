@@ -20,8 +20,10 @@ export interface Product {
 }
 
 interface User {
+  username: string;
   email: string;
   name: string;
+  image?: string;
 }
 
 interface AppState {
@@ -41,19 +43,19 @@ export const useAppStore = create<AppState>()(
       favorites: [],
       user: null,
 
-      addToFavorites: (productId) => {
-        set((state) => ({
+      addToFavorites: productId => {
+        set(state => ({
           favorites: [...state.favorites, productId],
         }));
       },
 
-      removeFromFavorites: (productId) => {
-        set((state) => ({
-          favorites: state.favorites.filter((id) => id !== productId),
+      removeFromFavorites: productId => {
+        set(state => ({
+          favorites: state.favorites.filter(id => id !== productId),
         }));
       },
 
-      toggleFavorite: (productId) => {
+      toggleFavorite: productId => {
         const isFav = get().favorites.includes(productId);
         if (isFav) {
           get().removeFromFavorites(productId);
@@ -62,11 +64,11 @@ export const useAppStore = create<AppState>()(
         }
       },
 
-      isFavorite: (productId) => {
+      isFavorite: productId => {
         return get().favorites.includes(productId);
       },
 
-      login: (user) => set({ user }),
+      login: user => set({ user }),
       logout: () => set({ user: null }),
     }),
     {

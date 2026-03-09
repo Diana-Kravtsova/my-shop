@@ -61,25 +61,19 @@ export default function ProductCard({ product }: ProductCardProps) {
             }}
           />
         ) : (
-          <div className="text-muted-foreground absolute inset-0 flex items-center justify-center">
-            No image
-          </div>
+          <div className="text-muted-foreground absolute inset-0 flex items-center justify-center">No image</div>
         )}
       </Link>
 
       <CardHeader className="p-4 pb-0">
         <Link href={`/product/${product.id}`}>
-          <h3 className="hover:text-primary line-clamp-2 font-semibold transition-colors">
-            {product.title}
-          </h3>
+          <h3 className="hover:text-primary line-clamp-2 font-semibold transition-colors">{product.title}</h3>
         </Link>
       </CardHeader>
 
       <CardContent className="p-4 pt-2">
         <div className="flex items-center justify-between">
-          <span className="text-2xl font-bold text-green-600 dark:text-green-400">
-            ${product.price.toFixed(2)}
-          </span>
+          <span className="text-2xl font-bold text-green-600 dark:text-green-400">${product.price.toFixed(2)}</span>
           <Badge variant="outline" className="gap-1">
             <span className="text-yellow-500">★</span>
             <span>{product.rating}</span>

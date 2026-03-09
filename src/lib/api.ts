@@ -2,6 +2,38 @@ import { type Product } from "./store";
 
 const API_BASE_URL = "https://dummyjson.com";
 
+export interface AuthUser {
+  id: number;
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  gender: string;
+  image: string;
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface LoginCredentials {
+  username: string;
+  password: string;
+}
+
+export async function loginUser(credentials: LoginCredentials): Promise<AuthUser> {
+  const res = await fetch(`${API_BASE_URL}/auth/login`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(credentials),
+  });
+
+  if (!res.ok) {
+    const error = await res.json().catch(() => ({}));
+    throw new Error(error.message || `Login failed: ${res.status}`);
+  }
+
+  return res.json();
+}
+
 export async function getAllProducts(): Promise<Product[]> {
   const res = await fetch(`${API_BASE_URL}/products?limit=50`, {
     next: { revalidate: 3600 },

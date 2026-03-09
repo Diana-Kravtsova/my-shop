@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAppStore } from "@/lib/store";
@@ -12,9 +13,9 @@ const navItems = [
 
 export default function Header() {
   const pathname = usePathname();
-  const favoritesCount = useAppStore((state) => state.favorites.length);
-  const user = useAppStore((state) => state.user);
-  const logout = useAppStore((state) => state.logout);
+  const favoritesCount = useAppStore(state => state.favorites.length);
+  const user = useAppStore(state => state.user);
+  const logout = useAppStore(state => state.logout);
 
   return (
     <header className="bg-background/80 sticky top-0 z-50 border-b backdrop-blur-sm">
@@ -30,12 +31,7 @@ export default function Header() {
 
         <nav className="flex items-center gap-2">
           {navItems.map(({ href, label }) => (
-            <Button
-              key={href}
-              variant={pathname === href ? "default" : "ghost"}
-              asChild
-              className="relative"
-            >
+            <Button key={href} variant={pathname === href ? "default" : "ghost"} asChild className="relative">
               <Link href={href}>
                 {label}
                 {href === "/favorites" && favoritesCount > 0 && (
@@ -49,9 +45,22 @@ export default function Header() {
         </nav>
 
         {user ? (
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
+            {user.image ? (
+              <Image
+                src={user.image}
+                alt={user.name}
+                width={36}
+                height={36}
+                className="ring-primary/40 rounded-full object-cover ring-2"
+              />
+            ) : (
+              <div className="from-primary flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br to-purple-600 text-sm font-bold text-white">
+                {user.name.charAt(0).toUpperCase()}
+              </div>
+            )}
             <span className="text-muted-foreground text-sm">Hi, {user.name}</span>
-            <Button variant="outline" size="sm" onClick={logout}>
+            <Button variant="outline" size="sm" onClick={logout} asChild>
               <Link href="/login">Logout</Link>
             </Button>
           </div>
