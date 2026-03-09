@@ -34,8 +34,15 @@ export async function loginUser(credentials: LoginCredentials): Promise<AuthUser
   return res.json();
 }
 
-export async function getAllProducts(): Promise<Product[]> {
-  const res = await fetch(`${API_BASE_URL}/products?limit=50`, {
+export interface PaginatedProducts {
+  products: Product[];
+  total: number;
+  skip: number;
+  limit: number;
+}
+
+export async function getAllProducts(limit = 20, skip = 0): Promise<PaginatedProducts> {
+  const res = await fetch(`${API_BASE_URL}/products?limit=${limit}&skip=${skip}`, {
     next: { revalidate: 3600 },
   });
 
@@ -43,8 +50,7 @@ export async function getAllProducts(): Promise<Product[]> {
     throw new Error(`Failed to fetch products: ${res.status}`);
   }
 
-  const data = await res.json();
-  return data.products;
+  return res.json();
 }
 
 export async function getProductById(id: string | number): Promise<Product> {
@@ -62,15 +68,14 @@ export async function getProductById(id: string | number): Promise<Product> {
   return res.json();
 }
 
-export async function getProductsByCategory(category: string): Promise<Product[]> {
-  const res = await fetch(`${API_BASE_URL}/products/category/${category}`);
+export async function getProductsByCategory(category: string, limit = 20, skip = 0): Promise<PaginatedProducts> {
+  const res = await fetch(`${API_BASE_URL}/products/category/${category}?limit=${limit}&skip=${skip}`);
 
   if (!res.ok) {
     throw new Error(`Failed to fetch products by category: ${res.status}`);
   }
 
-  const data = await res.json();
-  return data.products;
+  return res.json();
 }
 
 export async function getAllCategories(): Promise<string[]> {
