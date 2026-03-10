@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { loginUser } from "./api";
 
 export interface Product {
   id: number;
@@ -17,6 +18,10 @@ export interface Product {
   }[];
   images?: string[];
   thumbnail?: string;
+  shippingInformation?: string;
+  returnPolicy?: string;
+  warrantyInformation?: string;
+  availabilityStatus?: string;
 }
 
 interface User {
@@ -34,7 +39,7 @@ interface AppState {
   toggleFavorite: (productId: number) => void;
   isFavorite: (productId: number) => boolean;
   clearFavorites: () => void;
-  login: (user: User) => void;
+  login: (username: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -70,7 +75,17 @@ export const useAppStore = create<AppState>()(
       },
 
       clearFavorites: () => set({ favorites: [] }),
-      login: user => set({ user }),
+      login: async (username, password) => {
+        const userData = await loginUser({ username, password });
+        set({
+          user: {
+            username: userData.username,
+            email: userData.email,
+            name: `${userData.firstName} ${userData.lastName}`,
+            image: userData.image,
+          },
+        });
+      },
       logout: () => set({ user: null }),
     }),
     {
