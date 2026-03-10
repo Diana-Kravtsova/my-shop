@@ -19,7 +19,7 @@ export interface LoginCredentials {
   password: string;
 }
 
-export async function loginUser(credentials: LoginCredentials): Promise<AuthUser> {
+export const loginUser = async (credentials: LoginCredentials): Promise<AuthUser> => {
   const res = await fetch(`${API_BASE_URL}/auth/login`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -41,7 +41,7 @@ export interface PaginatedProducts {
   limit: number;
 }
 
-export async function getAllProducts(limit = 20, skip = 0): Promise<PaginatedProducts> {
+export const getAllProducts = async (limit = 20, skip = 0): Promise<PaginatedProducts> => {
   const res = await fetch(`${API_BASE_URL}/products?limit=${limit}&skip=${skip}`, {
     next: { revalidate: 3600 },
   });
@@ -53,14 +53,14 @@ export async function getAllProducts(limit = 20, skip = 0): Promise<PaginatedPro
   return res.json();
 }
 
-export async function getProductById(id: string | number): Promise<Product> {
+export const getProductById = async (id: string | number): Promise<Product | null> => {
   const res = await fetch(`${API_BASE_URL}/products/${id}`, {
     cache: "no-store",
   });
 
   if (!res.ok) {
     if (res.status === 404) {
-      throw new Error("Product not found");
+      return null;
     }
     throw new Error(`Failed to fetch product: ${res.status}`);
   }
@@ -68,7 +68,7 @@ export async function getProductById(id: string | number): Promise<Product> {
   return res.json();
 }
 
-export async function getProductsByCategory(category: string, limit = 20, skip = 0): Promise<PaginatedProducts> {
+export const getProductsByCategory = async (category: string, limit = 20, skip = 0): Promise<PaginatedProducts> => {
   const res = await fetch(`${API_BASE_URL}/products/category/${category}?limit=${limit}&skip=${skip}`);
 
   if (!res.ok) {
@@ -78,7 +78,7 @@ export async function getProductsByCategory(category: string, limit = 20, skip =
   return res.json();
 }
 
-export async function getAllCategories(): Promise<string[]> {
+export const getAllCategories = async (): Promise<string[]> => {
   const res = await fetch(`${API_BASE_URL}/products/categories`);
 
   if (!res.ok) {

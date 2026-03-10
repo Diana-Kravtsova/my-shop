@@ -15,7 +15,7 @@ type LoginFormInputs = {
   password: string;
 };
 
-export default function LoginPage() {
+export const LoginPage = () => {
   const router = useRouter();
   const login = useAppStore(state => state.login);
   const [apiError, setApiError] = useState<string | null>(null);

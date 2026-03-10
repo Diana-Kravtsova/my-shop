@@ -69,8 +69,8 @@ interface CategorySidebarProps {
   categories: string[];
 }
 
-export function CategorySidebar({ categories }: CategorySidebarProps) {
-  const { setOpen, isMobile } = useSidebar();
+export const CategorySidebar = ({ categories }: CategorySidebarProps) => {
+  const { setOpen, setOpenMobile } = useSidebar();
 
   const handleMouseEnter = () => {
     setOpen(true);
@@ -79,6 +79,10 @@ export function CategorySidebar({ categories }: CategorySidebarProps) {
   const handleMouseLeave = () => {
     setOpen(false);
   };
+
+  const handleLinkClick = () => {
+    setOpenMobile(false);
+  }
 
   return (
     <Sidebar collapsible="icon" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -89,7 +93,7 @@ export function CategorySidebar({ categories }: CategorySidebarProps) {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild tooltip="All Products">
-                  <Link href="/">
+                  <Link href="/" onClick={handleLinkClick}>
                     <LayoutGrid className="h-4 w-4" />
                     <span className="group-data-[collapsible=icon]:hidden">All Products</span>
                   </Link>
@@ -101,7 +105,7 @@ export function CategorySidebar({ categories }: CategorySidebarProps) {
                 return (
                   <SidebarMenuItem key={category}>
                     <SidebarMenuButton asChild tooltip={formatCategory(category)}>
-                      <Link href={`/category/${category}`}>
+                      <Link href={`/category/${category}`} onClick={handleLinkClick}>
                         <Icon className="h-4 w-4" />
                         <span className="group-data-[collapsible=icon]:hidden">{formatCategory(category)}</span>
                       </Link>
@@ -117,7 +121,7 @@ export function CategorySidebar({ categories }: CategorySidebarProps) {
   );
 }
 
-function formatCategory(slug: string): string {
+const formatCategory = (slug: string): string => {
   return slug
     .split("-")
     .map(word => word.charAt(0).toUpperCase() + word.slice(1))

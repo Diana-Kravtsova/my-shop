@@ -3,7 +3,7 @@ import { useAppStore } from "@/lib/store";
 import { getProductById } from "@/lib/api";
 import type { Product } from "@/lib/store";
 
-export function useFavoriteProducts() {
+export const useFavoriteProducts = () => {
     const favorites = useAppStore(state => state.favorites);
     const [products, setProducts] = useState<Product[]>([]);
     const [isLoading, setIsLoading] = useState(false);

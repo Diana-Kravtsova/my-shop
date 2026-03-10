@@ -14,7 +14,7 @@ interface ProductCardProps {
   product: Product;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export const ProductCard = ({ product }: ProductCardProps) => {
   const { toggleFavorite, isFavorite } = useAppStore();
   const [imageError, setImageError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);

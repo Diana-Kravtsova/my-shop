@@ -10,7 +10,7 @@ interface ClientProductActionsProps {
   productId: number;
 }
 
-export default function ClientProductActions({ productId }: ClientProductActionsProps) {
+export const ClientProductActions = ({ productId }: ClientProductActionsProps) => {
   const { toggleFavorite, isFavorite } = useAppStore();
   const [isPending, setIsPending] = useState(false);
 

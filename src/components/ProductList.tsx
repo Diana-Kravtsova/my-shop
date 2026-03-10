@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import ProductCard from "./ProductCard";
+import { ProductCard } from "./ProductCard";
 import { Button } from "./ui/button";
 import { type Product } from "@/lib/store";
 import { getAllProducts, getProductsByCategory } from "@/lib/api";
@@ -13,7 +13,7 @@ interface ProductListProps {
   category?: string;
 }
 
-export default function ProductList({ initialProducts, initialTotal, category }: ProductListProps) {
+export const ProductList = ({ initialProducts, initialTotal, category }: ProductListProps) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [skip, setSkip] = useState(initialProducts.length);
   const [isLoading, setIsLoading] = useState(false);
