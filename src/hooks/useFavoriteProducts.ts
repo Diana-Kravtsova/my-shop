@@ -13,7 +13,10 @@ export const useFavoriteProducts = () => {
 
         setIsLoading(true);
         Promise.all(favorites.map(id => getProductById(id)))
-            .then(setProducts)
+            .then(res => {
+                const validProducts = res.filter(p => p !== null) as Product[];
+                setProducts(validProducts);
+            })
             .finally(() => setIsLoading(false));
     }, [favorites]);
 
