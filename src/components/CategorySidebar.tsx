@@ -10,8 +10,16 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+  SidebarMenuSubButton,
   useSidebar,
 } from "@/components/ui/sidebar";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 import {
   LayoutGrid,
   Tag,
@@ -36,6 +44,7 @@ import {
   ShoppingBag,
   Flower2,
   Gem,
+  ChevronRight,
 } from "lucide-react";
 
 const categoryIconMap: Record<string, React.ElementType> = {
@@ -72,17 +81,15 @@ interface CategorySidebarProps {
 export const CategorySidebar = ({ categories }: CategorySidebarProps) => {
   const { setOpen, setOpenMobile } = useSidebar();
 
-  const handleMouseEnter = () => {
-    setOpen(true);
-  };
+  const womensCategories = categories.filter(c => c.startsWith("womens-"));
+  const mensCategories = categories.filter(c => c.startsWith("mens-"));
+  
+  const groupedCategories = new Set([...womensCategories, ...mensCategories]);
+  const otherCategories = categories.filter(c => !groupedCategories.has(c));
 
-  const handleMouseLeave = () => {
-    setOpen(false);
-  };
-
-  const handleLinkClick = () => {
-    setOpenMobile(false);
-  }
+  const handleMouseEnter = () => setOpen(true);
+  const handleMouseLeave = () => setOpen(false);
+  const handleLinkClick = () => setOpenMobile(false);
 
   return (
     <Sidebar collapsible="icon" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -91,8 +98,9 @@ export const CategorySidebar = ({ categories }: CategorySidebarProps) => {
           <SidebarGroupLabel className="px-4 py-2">Categories</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
+              {/* All Products */}
               <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="All Products">
+                <SidebarMenuButton asChild>
                   <Link href="/" onClick={handleLinkClick}>
                     <LayoutGrid className="h-4 w-4" />
                     <span className="group-data-[collapsible=icon]:hidden">All Products</span>
@@ -100,11 +108,76 @@ export const CategorySidebar = ({ categories }: CategorySidebarProps) => {
                 </SidebarMenuButton>
               </SidebarMenuItem>
 
-              {categories.map(category => {
+              {/* Women's Fashion Group */}
+              {womensCategories.length > 0 && (
+                <Collapsible asChild className="group/collapsible">
+                  <SidebarMenuItem>
+                    <CollapsibleTrigger asChild>
+                      <SidebarMenuButton>
+                        <ShoppingBag className="h-4 w-4" />
+                        <span className="group-data-[collapsible=icon]:hidden">Women's Fashion</span>
+                        <ChevronRight className="ml-auto h-4 w-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 group-data-[collapsible=icon]:hidden" />
+                      </SidebarMenuButton>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <SidebarMenuSub>
+                        {womensCategories.map(category => {
+                          const Icon = categoryIconMap[category] || Tag;
+                          return (
+                            <SidebarMenuSubItem key={category}>
+                              <SidebarMenuSubButton asChild>
+                                <Link href={`/category/${category}`} onClick={handleLinkClick}>
+                                  <Icon className="h-4 w-4" />
+                                  <span>{formatCategory(category)}</span>
+                                </Link>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          );
+                        })}
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  </SidebarMenuItem>
+                </Collapsible>
+              )}
+
+              {/* Men's Fashion Group */}
+              {mensCategories.length > 0 && (
+                <Collapsible asChild className="group/collapsible">
+                  <SidebarMenuItem>
+                    <CollapsibleTrigger asChild>
+                      <SidebarMenuButton>
+                        <Shirt className="h-4 w-4" />
+                        <span className="group-data-[collapsible=icon]:hidden">Men's Fashion</span>
+                        <ChevronRight className="ml-auto h-4 w-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 group-data-[collapsible=icon]:hidden" />
+                      </SidebarMenuButton>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <SidebarMenuSub>
+                        {mensCategories.map(category => {
+                          const Icon = categoryIconMap[category] || Tag;
+                          return (
+                            <SidebarMenuSubItem key={category}>
+                              <SidebarMenuSubButton asChild>
+                                <Link href={`/category/${category}`} onClick={handleLinkClick}>
+                                  <Icon className="h-4 w-4" />
+                                  <span>{formatCategory(category)}</span>
+                                </Link>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          );
+                        })}
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  </SidebarMenuItem>
+                </Collapsible>
+              )}
+
+              {/* Other Categories */}
+              {otherCategories.map(category => {
                 const Icon = categoryIconMap[category] || Tag;
                 return (
                   <SidebarMenuItem key={category}>
-                    <SidebarMenuButton asChild tooltip={formatCategory(category)}>
+                    <SidebarMenuButton asChild>
                       <Link href={`/category/${category}`} onClick={handleLinkClick}>
                         <Icon className="h-4 w-4" />
                         <span className="group-data-[collapsible=icon]:hidden">{formatCategory(category)}</span>
@@ -124,6 +197,10 @@ export const CategorySidebar = ({ categories }: CategorySidebarProps) => {
 const formatCategory = (slug: string): string => {
   return slug
     .split("-")
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .map(word => {
+      if (word === "womens" || word === "mens") return "";
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .filter(Boolean)
     .join(" ");
 }

@@ -3,23 +3,14 @@
 import { useAppStore } from "@/lib/store";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
-import { Heart, ShoppingBag, Loader2, Trash2 } from "lucide-react";
+import { Heart, ShoppingBag, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useFavoriteProducts } from "@/hooks/useFavoriteProducts";
 
 const FavoritesList = () => {
-  const { products, isLoading } = useFavoriteProducts();
-  const favorites = useAppStore(state => state.favorites);
+  const { products } = useFavoriteProducts();
 
-  if (isLoading) {
-    return (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <Loader2 className="text-primary h-12 w-12 animate-spin" />
-      </div>
-    );
-  }
-
-  if (favorites.length === 0) {
+  if (products.length === 0) {
     return (
       <div className="flex min-h-[500px] flex-col items-center justify-center rounded-3xl border-2 border-dashed bg-zinc-50/50 p-12 text-center dark:bg-zinc-900/50">
         <div className="mb-6 rounded-full bg-zinc-100 p-8 dark:bg-zinc-800">

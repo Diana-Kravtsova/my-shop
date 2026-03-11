@@ -107,7 +107,7 @@ const ProductPage = async ({params}: { params: Promise<{ id: string }> }) => {
             </div>
           </div>
 
-          <ClientProductActions productId={product.id}/>
+          <ClientProductActions product={product}/>
         </div>
       </div>
     </div>

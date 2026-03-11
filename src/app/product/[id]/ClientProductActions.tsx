@@ -1,25 +1,25 @@
 "use client";
 
-import { useAppStore } from "@/lib/store";
+import { useAppStore, type Product } from "@/lib/store";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Heart, HeartOff, Loader2 } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface ClientProductActionsProps {
-  productId: number;
+  product: Product;
 }
 
-export const ClientProductActions = ({ productId }: ClientProductActionsProps) => {
+export const ClientProductActions = ({ product }: ClientProductActionsProps) => {
   const { toggleFavorite, isFavorite } = useAppStore();
   const [isPending, setIsPending] = useState(false);
 
-  const isFav = isFavorite(productId);
+  const isFav = isFavorite(product.id);
 
   const handleToggleFavorite = async () => {
     setIsPending(true);
     await new Promise((resolve) => setTimeout(resolve, 300));
-    toggleFavorite(productId);
+    toggleFavorite(product);
     setIsPending(false);
   };
 

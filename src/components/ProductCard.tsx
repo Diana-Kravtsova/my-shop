@@ -84,7 +84,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
       <CardFooter className="mt-auto p-4 pt-0">
         <Button
-          onClick={() => toggleFavorite(product.id)}
+          onClick={() => toggleFavorite(product)}
           variant={buttonVariant}
           className="w-full gap-2"
           aria-label={buttonAriaLabel}

@@ -32,11 +32,11 @@ interface User {
 }
 
 interface AppState {
-  favorites: number[];
+  favorites: Product[];
   user: User | null;
-  addToFavorites: (productId: number) => void;
+  addToFavorites: (product: Product) => void;
   removeFromFavorites: (productId: number) => void;
-  toggleFavorite: (productId: number) => void;
+  toggleFavorite: (product: Product) => void;
   isFavorite: (productId: number) => boolean;
   clearFavorites: () => void;
   login: (username: string, password: string) => Promise<void>;
@@ -49,29 +49,29 @@ export const useAppStore = create<AppState>()(
       favorites: [],
       user: null,
 
-      addToFavorites: productId => {
+      addToFavorites: product => {
         set(state => ({
-          favorites: [...state.favorites, productId],
+          favorites: [...state.favorites, product],
         }));
       },
 
       removeFromFavorites: productId => {
         set(state => ({
-          favorites: state.favorites.filter(id => id !== productId),
+          favorites: state.favorites.filter(p => p.id !== productId),
         }));
       },
 
-      toggleFavorite: productId => {
-        const isFav = get().favorites.includes(productId);
+      toggleFavorite: product => {
+        const isFav = get().favorites.some(p => p.id === product.id);
         if (isFav) {
-          get().removeFromFavorites(productId);
+          get().removeFromFavorites(product.id);
         } else {
-          get().addToFavorites(productId);
+          get().addToFavorites(product);
         }
       },
 
       isFavorite: productId => {
-        return get().favorites.includes(productId);
+        return get().favorites.some(p => p.id === productId);
       },
 
       clearFavorites: () => set({ favorites: [] }),
